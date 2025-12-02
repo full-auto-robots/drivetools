@@ -1,5 +1,6 @@
 using UnityEngine.UI;
 using UnityEngine;
+using TMPro;
 
 public class dsp_field : MonoBehaviour
 {
@@ -23,7 +24,6 @@ public class dsp_field : MonoBehaviour
 
     public float textureRotationAngle;
 
-    public RectTransform[] rt_rotationButtons;
     public RectTransform rt_editButton;
     public RectTransform rt_packageButton;
     public RectTransform rt_stopDrawingButton;
@@ -32,6 +32,9 @@ public class dsp_field : MonoBehaviour
     public Transform t_pathContainer;
     public Transform t_markerContainer;
     public GameObject p_marker;
+
+    public GameObject p_dropdown;
+    public TMP_Dropdown dropdown;
 
     public void Initialize()
     {
@@ -45,19 +48,20 @@ public class dsp_field : MonoBehaviour
 
         imgToActiveRatio = new Vector2(activeImg.sizeDelta.x / 2048f, activeImg.sizeDelta.y / 1024f);
 
-        // the rotation buttons
-        rt_rotationButtons = new RectTransform[4];
-        // risky to use indices but whatever
-        transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => SetRotation(0)); // blue left, red right
-        rt_rotationButtons[0] = transform.GetChild(3).GetComponent<RectTransform>();
-        transform.GetChild(4).GetComponent<Button>().onClick.AddListener(() => SetRotation(90)); // blue bottom
-        rt_rotationButtons[1] = transform.GetChild(4).GetComponent<RectTransform>();
-        transform.GetChild(5).GetComponent<Button>().onClick.AddListener(() => SetRotation(180)); // red left, blue right
-        rt_rotationButtons[2] = transform.GetChild(5).GetComponent<RectTransform>();
-        transform.GetChild(6).GetComponent<Button>().onClick.AddListener(() => SetRotation(270)); // blue top, red bottom
-        rt_rotationButtons[3] = transform.GetChild(6).GetComponent<RectTransform>();
-
         GetComponent<dsp_fieldeditor>().Close();
+
+        // for the field orientation
+        transform.parent.GetComponent<dsp_mainvisual>().customEditingComps.Add(p_dropdown);
+        transform.parent.GetComponent<dsp_mainvisual>().customEditingNames.Add("orientation");
+        transform.parent.GetComponent<dsp_mainvisual>().onceInitialize.Add(
+            (x) =>
+            {
+                dropdown = x.GetComponent<TMP_Dropdown>();
+            }
+        );
+
+        //  I could use the same approach for the background image the field uses, but I want to support uploading custom files
+        // so I'm doing that later
     }
 
     public Vector3 GetOrigin()
@@ -98,6 +102,12 @@ public class dsp_field : MonoBehaviour
     // may want to assign this to a UnityAction
     void Update()
     {
+        // TODO: NOT PERIODIC
+        if (dropdown != null)
+        {
+            SetRotation(dropdown.value * 90);
+        }
+
         RectTransform parentRect = transform.parent.GetComponent<RectTransform>();
 
         // TODO: NOT DO THIS IN Update()!
@@ -105,10 +115,6 @@ public class dsp_field : MonoBehaviour
 
         Vector2 parentSize = parentRect.sizeDelta;
 
-        for (int i = 0; i < rt_rotationButtons.Length; i++)
-        {
-            rt_rotationButtons[i].position = new Vector3(rt_rotationButtons[i].sizeDelta.x / 2f, rt_rotationButtons[i].sizeDelta.y / 2f, 0) + parentRect.position - new Vector3(parentRect.sizeDelta.x, parentRect.sizeDelta.y, 0) / 2f + Vector3.right * i * (rt_rotationButtons[i].sizeDelta.x + 10);
-        }
         rt_editButton.position = new Vector3(rt_editButton.sizeDelta.x / 2f, -rt_editButton.sizeDelta.y / 2f, 0) + parentRect.position - new Vector3(parentRect.sizeDelta.x, -parentRect.sizeDelta.y, 0) / 2f;
         rt_packageButton.position = new Vector3(rt_packageButton.sizeDelta.x * 1.5f, -rt_packageButton.sizeDelta.y / 2f, 0) + parentRect.position - new Vector3(parentRect.sizeDelta.x, -parentRect.sizeDelta.y, 0) / 2f;
         rt_stopDrawingButton.position = new Vector3(rt_stopDrawingButton.sizeDelta.x * 2.5f, -rt_stopDrawingButton.sizeDelta.y / 2f, 0) + parentRect.position - new Vector3(parentRect.sizeDelta.x, -parentRect.sizeDelta.y, 0) / 2f;

@@ -67,6 +67,9 @@ public class ToolbarMenu : MonoBehaviour
 
                 t_itemContainer.GetChild(5).gameObject.SetActive(false);
                 t_itemContainer.GetChild(6).gameObject.SetActive(false);
+                t_itemContainer.GetChild(7).gameObject.SetActive(false);
+                t_itemContainer.GetChild(8).gameObject.SetActive(false);
+                t_itemContainer.GetChild(0).gameObject.SetActive(false);
             }
             else
             {
@@ -75,6 +78,9 @@ public class ToolbarMenu : MonoBehaviour
 
                 t_itemContainer.GetChild(5).gameObject.SetActive(true);
                 t_itemContainer.GetChild(6).gameObject.SetActive(true);
+                t_itemContainer.GetChild(7).gameObject.SetActive(false);
+                t_itemContainer.GetChild(8).gameObject.SetActive(false);
+                t_itemContainer.GetChild(0).gameObject.SetActive(false);
             }
         }
 

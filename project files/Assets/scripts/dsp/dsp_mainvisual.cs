@@ -33,6 +33,10 @@ public class dsp_mainvisual : MonoBehaviour
 
     void Awake()
     {
+        customEditingComps = new List<GameObject>();
+        customEditingNames = new List<string>();
+        onceInitialize = new List<UnityAction<GameObject>>();
+
         propertyNames = new List<string>();
         propertyValues = new List<string>();
     }

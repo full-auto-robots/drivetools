@@ -201,7 +201,16 @@ public class NetworkManager : MonoBehaviour
     {
         i_connectionIcon.color = IsConnectedGeneral() ? Color.green : Color.red;
         i_protocolIcon.color = IsConnectedGeneral() ? Color.green : Color.red;
-        i_protocolIcon.sprite = (ushort)mode == 1 ? nt3_protocol : nt4_protocol;
+        if ((ushort)mode == 0)
+        {
+            i_protocolIcon.sprite = sim_protocol;
+        } else if ((ushort)mode == 1)
+        {
+            i_protocolIcon.sprite = nt3_protocol;
+        } else if ((ushort)mode == 2)
+        {
+            i_protocolIcon.sprite = nt4_protocol;
+        }
 
         if (!isInViewingMode)
         {
