@@ -5,9 +5,9 @@ import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.util.Color;
-import frc.utils.M.Polygon;
-import frc.utils.M.Vector2;
-import frc.utils.M.Vector3;
+import frc.utils.dto.m.Polygon;
+import frc.utils.dto.m.Vector2;
+import frc.utils.dto.m.Vector3;
 
 public class nav_path
 {

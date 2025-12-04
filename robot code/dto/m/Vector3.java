@@ -5,7 +5,7 @@ import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
-import frc.utils.DT.DTUtils;
+import frc.utils.dto.DTUtils;
 
 // on the c# end (in Drivetools) this is referred to as DoubleVector3
 // but since doubles are the norm here I'm just calling it a Vector3

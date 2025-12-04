@@ -1,6 +1,6 @@
 package frc.utils.dto;
 
-import frc.utils.M.Vector3;
+import frc.utils.dto.m.Vector3;
 
 /*
  * trying to make sure I don't have any duplicate classes here
