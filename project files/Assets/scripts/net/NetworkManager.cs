@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public enum NetworkMode
 {
@@ -79,7 +80,8 @@ public class NetworkManager : MonoBehaviour
     public Sprite nt4_protocol;
     public Sprite sim_protocol;
 
-    private NetworkTables client;
+    private NetworkTables n;
+    private UIntPtr inst;
 
     public net_ntdatalist PackageFlaggedNTValues()
     {
@@ -238,7 +240,7 @@ public class NetworkManager : MonoBehaviour
 
         if (mode != NetworkMode.Simulated)
         {
-            mode = (NetworkMode)(rw_utils.prefs.ntProtocol + 1);
+            mode = (NetworkMode)1;
         }
 
         if (mode == NetworkMode.Simulated)
@@ -444,32 +446,30 @@ public class NetworkManager : MonoBehaviour
 
     public void InitializeNT3Client()
     {
-        Debug.Log("Starting networktables...");
-        //client = new NetworkTablesClient("drivetools", rw_utils.prefs.serverIP); //&@
+        Debug.Log("Starting networktables V3...");
+
+        n = new NetworkTables();
+
+        inst = NtCoreInterop.NT_GetDefaultInstance();
+
+        if (inst != (UIntPtr)0)
+        {
+            n.ConnectToServerV3((UIntPtr)rw_utils.prefs.teamNumber, inst);
+        }
     }
 
     // when the user updates the settings
     public void ReInitializeNT3Client()
     {
-        //client = new NetworkTablesClient("drivetools", rw_utils.prefs.serverIP); //&@
+        n.Disconnect(inst);
+        n.ConnectToServerV3((UIntPtr)rw_utils.prefs.teamNumber, inst);
     }
 
     public void InitializeNT4Client()
-    {
-        // Debug.Log("Starting networktables...");
-        
-        // nt4_source = new Nt4Source(rw_utils.prefs.serverIP, "DriveTools", true, 5810);
-
-        // //nt4_source.Connect();
-    }
+    {}
 
     public void ReInitializeNT4Client()
-    {
-        // nt4_source.Disconnect();
-
-        // nt4_source = new Nt4Source(rw_utils.prefs.serverIP, "DriveTools", true, 5810);
-        // //nt4_source.Connect();
-    }
+    {}
 
     // allows check w/o specifying comm. mode
     public bool IsConnectedGeneral()
@@ -495,7 +495,7 @@ public class NetworkManager : MonoBehaviour
 
     public bool IsConnectedToNT3()
     {
-        return true;
+        return n.IsConnectedV3(inst);
     }
 
     public bool IsConnectedToNT4()

@@ -2,6 +2,17 @@ using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
+[StructLayout(LayoutKind.Sequential)]
+public struct WPI_String
+{
+    // const char* str - pointer to the UTF8/ANSI string contents
+    // We use IntPtr to hold the pointer to the managed string data
+    public IntPtr str; 
+    
+    // size_t len - length of the string, which is platform-dependent (4 or 8 bytes)
+    public UIntPtr len; 
+}
+
 public class NetworkTables
 {
     public static UIntPtr defaultNT3Port = (UIntPtr)1735;
@@ -42,6 +53,11 @@ public class NetworkTables
         }
         
         NtCoreInterop.NT_SetServerTeam(id, teamNumber, defaultNT3Port);
+    }
+
+    public void Disconnect(UIntPtr id)
+    {
+        NtCoreInterop.NT_Disconnect(id);
     }
 
     public bool IsConnectedV3(UIntPtr id)
