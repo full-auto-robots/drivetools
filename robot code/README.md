@@ -1,6 +1,6 @@
 ## Info
 
-"dto" contains all supporting drivetools code
+"dto" (which stands for DriveTOols) contains all supporting drivetools code
 "m" (inside of "dto") contains supporting vector classes for some of the data types
 
 ## Instructions
