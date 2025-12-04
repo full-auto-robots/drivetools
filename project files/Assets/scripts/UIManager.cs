@@ -43,6 +43,8 @@ public class UIManager : MonoBehaviour
     public ui_filebrowser fileBrowser;
     public GameObject g_toolbar;
     public GameObject g_infoPage;
+    public GameObject g_setupMenu;
+    public QuickSetup setupMenu;
 
     public SplashScreen splashScreen;
 

@@ -19,6 +19,7 @@ public class SettingsMenu : MonoBehaviour
     public TMP_Dropdown in_ntProtocol;
 
     public ui_checkbox splashScreenCheckbox;
+
     void Start()
     {
         selectionTabs.InitializeFromChildren(t_panelContainer);
@@ -34,12 +35,30 @@ public class SettingsMenu : MonoBehaviour
         UIManager.Instance.TrySplashScreen();
     }
 
+    void ShowSetupMenu()
+    {
+        UIManager.Instance.g_setupMenu.SetActive(true);
+    }
+
+    public void ConfirmSetupMenu()
+    {
+        int num = 0;
+        if (int.TryParse(UIManager.Instance.setupMenu.teamNumberInput.text, out num))
+        {
+            rw_utils.prefs.teamNumber = num;
+        }  
+        rw_utils.prefs.serverIP = "10." + rw_utils.prefs.teamNumber.ToString().Substring(0, 2) + "." + rw_utils.prefs.teamNumber.ToString().Substring(2, 2) + ".2";
+        
+        rw_utils.prefs.ntProtocol = (ushort)(UIManager.Instance.setupMenu.networkProtocolInput.value);
+    }
+
     void TryLoadPreferences()
     {
         rw_userprefs loaded = rw_utils.LoadPreferences();
         if (loaded == null || ProgramManager.Instance.FORCE_NEW_SAVE_FILE)
         {
             rw_utils.prefs = rw_userprefs.FactoryDefaults();
+            ShowSetupMenu();
             Debug.Log("Failed to load prefs. Using factory defaults...");
         }
         else
