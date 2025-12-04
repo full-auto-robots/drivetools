@@ -8,4 +8,5 @@ public class QuickSetup : MonoBehaviour
 {
     public TMP_InputField teamNumberInput;
     public TMP_Dropdown networkProtocolInput;
+    public TMP_Dropdown autoSetInput;
 }

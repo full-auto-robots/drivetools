@@ -1,0 +1,6 @@
+as this software gets more convoluted, the build process gets more complicated
+***
+
+
+* CHECK VERSION NUMBER/DATE IN INFO MENU
+* SET NetworkManager's mode to ANYTHING BUT 'SIMULATED', otherwise it will be locked into simulated

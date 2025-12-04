@@ -37,11 +37,6 @@ public class ProgramManager : MonoBehaviour
     // should be pretty much the ONLY occurence of this function other than for initialization purposes
     void Start()
     {
-        rw_utils.ModifyTxtWithNoSurprises(
-            "C:/Users/Public/Documents/FRC/FRC DS Data Storage.ini",
-            3,
-            rw_utils.RemoveLastDirectory("DashboardCmdLine = " + Application.dataPath) + "/far_drivetools.exe");
-
         UIManager.Instance.TurnOffDebugObjects();
     }
 

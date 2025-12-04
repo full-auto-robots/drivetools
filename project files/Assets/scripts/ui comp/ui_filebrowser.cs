@@ -2,11 +2,20 @@ using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
+using System.Collections.Generic;
+
+// seems unecessary but im doing it anyway
+public enum BrowseMode
+{
+    Browse,
+    Recents,
+}
 
 // this might just be the fuckin' bane of my existance
 
 public class ui_filebrowser : MonoBehaviour
 {
+    private ushort viewingMode;
     [Header("CONFIG")]
     public float numHorizontal;
     public float numVertical;
@@ -15,16 +24,48 @@ public class ui_filebrowser : MonoBehaviour
     [Header("REFERENCES")]
     public GameObject p_fileIcon;
     public Transform t_iconContainer;
+    public Transform t_recentIconContainer;
 
     public float scrollPhase;
     public float scrollSpeed;
 
     public UnityAction<string> whenSelectionConfirmed;
 
+    // we don't want "recently selected" to be handled by this script,
+    // because then we have to just store/assume everything
+    // so the 'recent' files are passed in here
+    public string[] recentFileDirectories;
+    // for now, they'll all just have whatever icons they would normally have
+
+    public GameObject g_recentButton;
+    public GameObject g_browseButton;
+
+    public TextMeshProUGUI titleDisplay;
+
+    private Vector3 originalPosition;
+
+    public void SwitchToBrowse()
+    {
+        viewingMode = (ushort)BrowseMode.Browse;
+
+        t_iconContainer.gameObject.SetActive(true);
+        t_recentIconContainer.gameObject.SetActive(false);
+    }
+
+    public void SwitchToRecents()
+    {
+        viewingMode = (ushort)BrowseMode.Recents;
+
+        t_iconContainer.gameObject.SetActive(false);
+        t_recentIconContainer.gameObject.SetActive(true);
+    }
+
     void Awake()
     {
         transform.GetChild(0).gameObject.SetActive(false);
         directory = "";
+
+        originalPosition = t_iconContainer.localPosition;
     }
 
     void Update()
@@ -34,10 +75,11 @@ public class ui_filebrowser : MonoBehaviour
 
     void HandleInteraction()
     {
-        if (CanvasUtils.IsCursorInteract(t_iconContainer.parent.gameObject, true))
+        if (CanvasUtils.IsCursorInteract(transform.GetChild(0).GetChild(0).gameObject, true))
         {
             scrollPhase += Input.GetAxis("Mouse ScrollWheel") * -scrollSpeed;
-            t_iconContainer.localPosition = Vector3.up * scrollPhase;
+            t_iconContainer.localPosition = originalPosition + Vector3.up * scrollPhase;
+            t_recentIconContainer.localPosition = originalPosition + Vector3.up * scrollPhase;
         }
     }
 
@@ -61,12 +103,29 @@ public class ui_filebrowser : MonoBehaviour
 
     public void DrawDirectory(string dir)
     {
-        DrawDirectory(dir, "");
+        DrawDirectory(dir, "", new string[0],"Browse:");
+    }   
+    // the recent file directories are passed in with this same function,
+    // so we can safely re-initialize the array
+    public void DrawDirectory(string dir, string[] recents)
+    {
+        DrawDirectory(dir, "", recents,"Browse:");
     }
-
-    // loading the UI, given a string directory
     public void DrawDirectory(string dir, string requiredExtension)
     {
+        DrawDirectory(dir, requiredExtension, new string[0],"Browse:");
+    } 
+
+    // loading the UI, given a string directory
+    public void DrawDirectory(string dir, string requiredExtension, string[] recents, string title)
+    {
+        scrollPhase = 0;
+        titleDisplay.text = title;
+        
+        SwitchToBrowse();
+        recentFileDirectories = recents; // initializing the array
+        g_recentButton.SetActive(recentFileDirectories.Length > 0); // only show the option if there are recent files
+
         CanvasUtils.DestroyChildren(t_iconContainer.gameObject);
 
         //Debug.Log(dir);
@@ -79,6 +138,32 @@ public class ui_filebrowser : MonoBehaviour
 
         int horizontalIndex = 0;
         int verticalIndex = 0;
+        for (int i = 0; i < recentFileDirectories.Length; i++)
+        {
+            // TODO: one function that adds the icon so I don't have to c+v this code three times
+            Transform t_newIcon = Instantiate(p_fileIcon, t_recentIconContainer).transform;
+            t_newIcon.localPosition = -Vector3.up * verticalIndex * t_newIcon.GetComponent<RectTransform>().sizeDelta.y +
+            Vector3.right * horizontalIndex * t_newIcon.GetComponent<RectTransform>().sizeDelta.x;
+
+            t_newIcon.GetChild(0).GetComponent<Image>().sprite = rw_utils.GetIcon(recentFileDirectories[i]);
+            t_newIcon.GetChild(1).GetComponent<TextMeshProUGUI>().text = rw_utils.GetLastDirectory(recentFileDirectories[i]);
+
+            int temp = i;
+            t_newIcon.GetChild(0).GetComponent<Button>().onClick.AddListener(() =>
+            {
+                ConfirmDirectory(recentFileDirectories[temp]);
+            });
+
+            horizontalIndex++;
+            if (horizontalIndex >= numHorizontal)
+            {
+                horizontalIndex = 0;
+                verticalIndex++;
+            }
+        }
+
+        horizontalIndex = 0;
+        verticalIndex = 0;
         for (int i = 0; i < folderPaths.Length; i++)
         {
             // spawn in a new folder icon

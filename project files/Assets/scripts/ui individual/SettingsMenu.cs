@@ -43,13 +43,25 @@ public class SettingsMenu : MonoBehaviour
     public void ConfirmSetupMenu()
     {
         int num = 0;
+        string rawNum;
         if (int.TryParse(UIManager.Instance.setupMenu.teamNumberInput.text, out num))
         {
             rw_utils.prefs.teamNumber = num;
+            rawNum = UIManager.Instance.setupMenu.teamNumberInput.text;
+            
+            rw_utils.prefs.serverIP = "10." + rawNum.Substring(0, 2) + "." + rawNum.Substring(2, 2) + ".2";
         }  
-        rw_utils.prefs.serverIP = "10." + rw_utils.prefs.teamNumber.ToString().Substring(0, 2) + "." + rw_utils.prefs.teamNumber.ToString().Substring(2, 2) + ".2";
         
         rw_utils.prefs.ntProtocol = (ushort)(UIManager.Instance.setupMenu.networkProtocolInput.value);
+
+        if (UIManager.Instance.setupMenu.autoSetInput.value == 0)
+        {
+            // trying to make the FRC Driverstation think we're the default
+            rw_utils.ModifyTxtWithNoSurprises(
+                "C:/Users/Public/Documents/FRC/FRC DS Data Storage.ini",
+                3,
+                rw_utils.RemoveLastDirectory("DashboardCmdLine = " + Application.dataPath) + "/far_drivetools.exe");
+        }
     }
 
     void TryLoadPreferences()

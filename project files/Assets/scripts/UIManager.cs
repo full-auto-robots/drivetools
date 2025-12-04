@@ -209,11 +209,15 @@ public class UIManager : MonoBehaviour
         fileBrowser.DrawDirectory(dir);
     }
 
-    // since there can't be an immediate return, I'm going to use a unity action
-    public void SelectDirectory(string defaultDir, string extension, UnityAction<string> afterSelect)
+    
+    public void SelectDirectory(string defaultDir, string extension, UnityAction<string> afterSelect) // since there can't be an immediate return, I'm going to use a unity action
+    {
+        SelectDirectory(defaultDir, extension, new string[0], afterSelect, "");
+    }
+    public void SelectDirectory(string defaultDir, string extension, string[] recentFiles, UnityAction<string> afterSelect, string title)
     {
         fileBrowser.transform.GetChild(0).gameObject.SetActive(true);
-        fileBrowser.DrawDirectory(defaultDir, extension);
+        fileBrowser.DrawDirectory(defaultDir, extension, recentFiles, title);
 
         fileBrowser.whenSelectionConfirmed = afterSelect;
     }

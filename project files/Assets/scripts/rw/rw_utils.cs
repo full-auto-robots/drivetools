@@ -28,11 +28,7 @@ public class rw_utils : MonoBehaviour
 
     public static Sprite GetIcon(string path)
     {
-        // for now, just checking if it's a folder or a file
-        int lastSlashIndex = Mathf.Max(Sys.FindLastOccurance(path, '/'), Sys.FindLastOccurance(path, '\\'));
-        int lastPeriodIndex = Sys.FindLastOccurance(path, '.');
-
-        if (lastPeriodIndex > lastSlashIndex + 1)
+        if (File.Exists(path))
         {
             if (GetFileExtension(path) == ".lyt") {
                 return fileIcons[2];
@@ -97,17 +93,16 @@ public class rw_utils : MonoBehaviour
         }
     }
     
-    public static void SaveLayout(dsp_layout _rec, string fileName)
+    public static void SaveLayout(dsp_layout _rec, string dir, string filename)
     {
-        string savePath = prefs.defaultLayoutDirectory + "\\";
-
-        if (!Directory.Exists(savePath))
+        if (!Directory.Exists(dir))
         {
-            Directory.CreateDirectory(savePath);
+            Directory.CreateDirectory(dir);
         }
+        prefs.workingLayoutSaveDirectory = dir;
 
         BinaryFormatter formatter = new BinaryFormatter();
-        FileStream stream = new FileStream(savePath + fileName + ".lyt", FileMode.Create);
+        FileStream stream = new FileStream(dir + filename + ".lyt", FileMode.Create);
 
         formatter.Serialize(stream, _rec);
         stream.Close();
@@ -246,6 +241,17 @@ public class rw_utils : MonoBehaviour
     {
         int dotIndex = Sys.FindLastOccurance(path, '.');
         return path.Substring(dotIndex + 1, path.Length - dotIndex - 1);
+    }
+
+    public static string RemoveTrailingSlash(string path)
+    {
+        if (path[path.Length - 1] == '/' || path[path.Length - 1] == '\\')
+        {
+            return path.Substring(0, path.Length - 1);
+        } else
+        {
+            return path;
+        }
     }
 
 

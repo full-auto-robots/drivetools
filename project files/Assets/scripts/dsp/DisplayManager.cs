@@ -228,16 +228,26 @@ public class DisplayManager : MonoBehaviour
     public void SaveCurrentLayoutToDisk()
     {
         dsp_layout currentLayout = GetCurrentDisplayLayout();
-        rw_utils.SaveLayout(currentLayout, "layout");
+
+        UIManager.Instance.SelectDirectory(rw_utils.RemoveTrailingSlash(rw_utils.prefs.workingLayoutSaveDirectory), ".bbb", new string[0], (x) =>
+        {
+            rw_utils.SaveLayout(currentLayout, x + "/", "layout");
+        }, "Save Layout:");
+        
     }
 
     public void LoadLayoutFromDisk()
     {
-        UIManager.Instance.SelectDirectory(rw_utils.prefs.defaultLayoutDirectory, ".lyt", (x) => LoadLayoutFromDirectory(x));
+        UIManager.Instance.SelectDirectory(rw_utils.RemoveTrailingSlash(rw_utils.prefs.workingLayoutLoadDirectory), ".lyt", rw_utils.prefs.recentLayoutDirectories.ToArray(), (x) => LoadLayoutFromDirectory(x), "Select Layout:");
     }
 
     public void LoadLayoutFromDirectory(string dir)
     {
+        rw_utils.prefs.workingLayoutLoadDirectory = dir;
+        if (!rw_utils.prefs.recentLayoutDirectories.Contains(dir))
+        {
+            rw_utils.prefs.recentLayoutDirectories.Add(dir);
+        }
         rw_utils.prefs.previousLoadDirectory = dir;
         LoadDisplayLayout(rw_utils.LoadLayout(dir));
     }
