@@ -79,4 +79,18 @@ internal static class NtCoreInterop
     public static extern bool NT_IsConnected(UIntPtr inst);
 
     // ***
+
+    // ENTRY STUFF ***
+
+    [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+    public static extern IntPtr NT_GetEntry(UIntPtr inst, ref WPI_String name);
+
+    // strings
+    [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+    public static extern WPI_String NT_GetString(IntPtr entry);
+
+    [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+    public static extern void NT_DisposeString(IntPtr str); 
+
+    // ***
 }

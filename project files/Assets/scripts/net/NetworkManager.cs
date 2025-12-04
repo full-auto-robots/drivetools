@@ -42,6 +42,8 @@ public class NetworkManager : MonoBehaviour
         Instance = this;
     }
 
+    public bool temp;
+
     [Header("CONFIG")]
     public NetworkMode mode;
     public float ntPullInterval; // how many seconds between NT refreshes
@@ -201,6 +203,12 @@ public class NetworkManager : MonoBehaviour
 
     void Update()
     {
+        // temp
+        if (IsConnectedGeneral() && temp)
+        {
+            Debug.Log(n.GetString(n.GetEntry(inst, "text_test")));
+        }
+
         i_connectionIcon.color = IsConnectedGeneral() ? Color.green : Color.red;
         i_protocolIcon.color = IsConnectedGeneral() ? Color.green : Color.red;
         if ((ushort)mode == 0)

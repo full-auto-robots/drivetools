@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using System.Text;
 using UnityEngine;
 
 [StructLayout(LayoutKind.Sequential)]
@@ -13,6 +14,13 @@ public struct WPI_String
     public UIntPtr len; 
 }
 
+public readonly struct NT_Entry
+{
+    public readonly IntPtr Handle;
+    public NT_Entry(IntPtr handle) => Handle = handle;
+}
+
+
 public class NetworkTables
 {
     public static UIntPtr defaultNT3Port = (UIntPtr)1735;
@@ -23,11 +31,23 @@ public class NetworkTables
 
     public void ConnectToServerV3(UIntPtr teamNumber, UIntPtr id)
     {
-        //Debug.Log(id);
-        //IntPtr identityPtr = CreateWPIString("10.23.86.1");
-        // 1. Convert the C# string to a null-terminated UTF8 byte array
-        // UTF8 is used for modern WPILib strings; ANSI/LPStr might also work
-        byte[] bytes = System.Text.Encoding.UTF8.GetBytes("dt");
+        WPI_String s = makeWPIString("dt");
+
+        try
+        {
+            NtCoreInterop.NT_StartClient3(id, ref s);
+        }
+        finally
+        {
+            // nothing lol
+        }
+        
+        NtCoreInterop.NT_SetServerTeam(id, teamNumber, defaultNT3Port);
+    }
+
+    WPI_String makeWPIString(string input)
+    {
+        byte[] bytes = Encoding.UTF8.GetBytes(input);
 
         // 2. Allocate unmanaged memory for the string data
         IntPtr nativeStrPtr = Marshal.AllocHGlobal(bytes.Length + 1); // +1 for null terminator
@@ -43,16 +63,72 @@ public class NetworkTables
             len = (UIntPtr)bytes.Length // Note: NT3 often ignores len, but set it correctly
         };
 
+        return s;
+    }
+
+    public IntPtr GetEntry(UIntPtr id, string name)
+    {
+        WPI_String s = makeWPIString(name);
+
+        return NtCoreInterop.NT_GetEntry(id, ref s);
+    }
+    
+    public string GetString(IntPtr entryHandle, string defaultValue = "")
+    {
+        WPI_String ntString = new WPI_String();
+        string managedString = defaultValue;
+
+        WPI_String dVal = makeWPIString(defaultValue);
+
         try
         {
-            NtCoreInterop.NT_StartClient3(id, ref s);
+            ntString = NtCoreInterop.NT_GetString(entryHandle);
+
+            // 2. Check if the pointer is valid (not the default value string pointer)
+            if (ntString.str != IntPtr.Zero && (ulong)ntString.len > 0)
+            {
+                // 3. Marshal the native UTF-8 string pointer into a managed C# string
+                
+                // We need to determine the correct byte length of the string.
+                // The 'len' parameter (UIntPtr) provides the byte count.
+                int byteLength = (int)(ulong)ntString.len;
+
+                // Marshal.PtrToStringUTF8 is often available in newer .NET versions,
+                // but the manual way below is more compatible and handles the length precisely
+                // based on what NT_GetString provided.
+                
+                byte[] buffer = new byte[byteLength];
+                Marshal.Copy(ntString.str, buffer, 0, byteLength);
+                managedString = Encoding.UTF8.GetString(buffer);
+            }
+            else
+            {
+                // If nativeStrPtr is IntPtr.Zero or length is 0, the function likely 
+                // returned the default value (which is not a pointer to be freed).
+                managedString = defaultValue;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error retrieving string from NTcore: {ex.Message}");
+            managedString = defaultValue;
         }
         finally
         {
-            // nothing lol
+            if (ntString.str != null)
+            {
+                // 4. CRITICAL: Free the native memory if the function returned a pointer.
+                // We must only free memory allocated by NT_GetString (i.e., if it returned a pointer 
+                // that is not null and is not pointing to the internal default value buffer).
+                // A correct NTcore implementation will require a free if the pointer is non-zero.
+                if (ntString.str != IntPtr.Zero)
+                {
+                    NtCoreInterop.NT_DisposeString(ntString.str);
+                }
+            }
         }
         
-        NtCoreInterop.NT_SetServerTeam(id, teamNumber, defaultNT3Port);
+        return managedString;
     }
 
     public void Disconnect(UIntPtr id)
