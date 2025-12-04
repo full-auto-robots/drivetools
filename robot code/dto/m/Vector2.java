@@ -1,4 +1,4 @@
-package frc.utils.M;
+package frc.utils.dto.m;
 
 public class Vector2 {
     public double x;

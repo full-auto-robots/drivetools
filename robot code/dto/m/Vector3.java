@@ -1,4 +1,4 @@
-package frc.utils.M;
+package frc.utils.dto.m;
 
 import java.util.LinkedList;
 import java.util.List;

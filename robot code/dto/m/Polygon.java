@@ -1,4 +1,4 @@
-package frc.utils.M;
+package frc.utils.dto.m;
 
 // class that represents a 2D polygonal shape on the field
 // used in the pathfinding algorithm that makes a path around the field

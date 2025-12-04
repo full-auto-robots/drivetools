@@ -1,4 +1,4 @@
-package frc.utils.DT;
+package frc.utils.dto;
 
 import edu.wpi.first.wpilibj.util.Color;
 

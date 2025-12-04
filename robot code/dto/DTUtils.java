@@ -1,4 +1,4 @@
-package frc.utils.DT;
+package frc.utils.dto;
 
 import java.util.LinkedList;
 import java.util.List;
