@@ -86,11 +86,21 @@ internal static class NtCoreInterop
     public static extern IntPtr NT_GetEntry(UIntPtr inst, ref WPI_String name);
 
     // strings
-    [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
-    public static extern WPI_String NT_GetString(IntPtr entry);
 
     [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
-    public static extern void NT_DisposeString(IntPtr str); 
+    public static extern void NT_GetEntryName(IntPtr entry, ref WPI_String val);
 
+
+    [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+    public static extern void  NT_GetEntryValue(
+        IntPtr  entry, out NT_Value v
+    );
+
+    // UNTESTED BELOW HERE, so WATCH OUT
+    [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
+    [return: MarshalAs(UnmanagedType.I1)]
+    public static extern bool  NT_SetEntryValue(
+        IntPtr  entry, NT_Value newValue
+    );
     // ***
 }

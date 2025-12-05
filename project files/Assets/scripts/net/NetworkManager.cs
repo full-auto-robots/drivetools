@@ -82,8 +82,10 @@ public class NetworkManager : MonoBehaviour
     public Sprite nt4_protocol;
     public Sprite sim_protocol;
 
+    // very IMPORTANT networktables variables ****
     private NetworkTables n;
     private UIntPtr inst;
+    // ****
 
     public net_ntdatalist PackageFlaggedNTValues()
     {
@@ -126,8 +128,7 @@ public class NetworkManager : MonoBehaviour
             net_fakent.WriteString(key, newValue);
         } else if (mode == NetworkMode.NT3)
         {
-            // TODO: confirm that this works!!!
-            //client.SetString(key, newValue); //&@
+            n.SetString(n.GetEntry(inst, key), newValue);
         } else if (mode == NetworkMode.NT4)
         {
             // TODO:
@@ -203,11 +204,12 @@ public class NetworkManager : MonoBehaviour
 
     void Update()
     {
-        // temp
-        if (IsConnectedGeneral() && temp)
-        {
-            Debug.Log(n.GetString(n.GetEntry(inst, "text_test")));
-        }
+        // // temp
+        // if (IsConnectedGeneral() && temp)
+        // {
+        //     Debug.Log(n.GetName(n.GetEntry(inst, "/SmartDashboard/ttt")));
+        //     Debug.Log(n.GetString(n.GetEntry(inst, "/SmartDashboard/ttt")));
+        // }
 
         i_connectionIcon.color = IsConnectedGeneral() ? Color.green : Color.red;
         i_protocolIcon.color = IsConnectedGeneral() ? Color.green : Color.red;
@@ -308,7 +310,7 @@ public class NetworkManager : MonoBehaviour
                     for (int i = 0; i < keyArray.Length; i++)
                     {
                         keyArray[i] = keys[i];
-                        //valueArray[i] = client.GetString(keyArray[i]); //&@
+                        valueArray[i] = n.GetString(n.GetEntry(inst, keys[i]));
                     }
 
                     if (keyArray.Length > 0) {

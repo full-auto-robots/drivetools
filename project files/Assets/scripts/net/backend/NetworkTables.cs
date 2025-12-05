@@ -14,10 +14,54 @@ public struct WPI_String
     public UIntPtr len; 
 }
 
-public readonly struct NT_Entry
+[StructLayout(LayoutKind.Sequential)]
+public struct NT_Raw
 {
-    public readonly IntPtr Handle;
-    public NT_Entry(IntPtr handle) => Handle = handle;
+    // const uint8_t*
+    public IntPtr data; 
+    // size_t
+    public UIntPtr len; 
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public struct NT_Value
+{
+    // Field 1: The type of the data (NT_Type is an enum/int)
+    public int type;
+
+    public ulong last_change;
+    public ulong server_time;
+
+    // Field 3: The Union (contains the actual value)
+    public NT_ValueData data; 
+}
+
+[StructLayout(LayoutKind.Explicit)]
+public struct NT_ValueData
+{
+    // Boolean value (C boolean is typically marshaled as int)
+    [FieldOffset(0)] 
+    public int v_boolean;
+
+    // 64-bit Integer value (int64_t maps to long, 8 bytes)
+    [FieldOffset(0)]
+    public long v_int64;
+
+    // Float value (float, 4 bytes)
+    [FieldOffset(0)]
+    public float v_float;
+
+    // Double value (double, 8 bytes)
+    [FieldOffset(0)]
+    public double v_double;
+
+    // String value (NT_String, 16 bytes)
+    [FieldOffset(0)]
+    public WPI_String v_string;
+
+    // Raw value (NT_Raw, 16 bytes)
+    [FieldOffset(0)]
+    public NT_Raw v_raw;
 }
 
 
@@ -72,63 +116,55 @@ public class NetworkTables
 
         return NtCoreInterop.NT_GetEntry(id, ref s);
     }
-    
-    public string GetString(IntPtr entryHandle, string defaultValue = "")
-    {
-        WPI_String ntString = new WPI_String();
-        string managedString = defaultValue;
 
-        WPI_String dVal = makeWPIString(defaultValue);
+    public string GetName(IntPtr entry)
+    {
+        WPI_String s = new WPI_String();
+
+        NtCoreInterop.NT_GetEntryName(entry, ref s);
+        
+        return Marshal.PtrToStringAnsi(s.str, (int)s.len);
+    }
+    
+    public string GetString(IntPtr entry)
+    {
+        NT_Value value = new NT_Value();
+        NtCoreInterop.NT_GetEntryValue(entry, out value);
+        //Debug.Log(value.type);
+        string s =  "";
 
         try
         {
-            ntString = NtCoreInterop.NT_GetString(entryHandle);
-
-            // 2. Check if the pointer is valid (not the default value string pointer)
-            if (ntString.str != IntPtr.Zero && (ulong)ntString.len > 0)
+            if (value.data.v_raw.data != IntPtr.Zero && value.data.v_raw.len.ToUInt64() != 0)
             {
-                // 3. Marshal the native UTF-8 string pointer into a managed C# string
-                
-                // We need to determine the correct byte length of the string.
-                // The 'len' parameter (UIntPtr) provides the byte count.
-                int byteLength = (int)(ulong)ntString.len;
-
-                // Marshal.PtrToStringUTF8 is often available in newer .NET versions,
-                // but the manual way below is more compatible and handles the length precisely
-                // based on what NT_GetString provided.
-                
-                byte[] buffer = new byte[byteLength];
-                Marshal.Copy(ntString.str, buffer, 0, byteLength);
-                managedString = Encoding.UTF8.GetString(buffer);
-            }
-            else
-            {
-                // If nativeStrPtr is IntPtr.Zero or length is 0, the function likely 
-                // returned the default value (which is not a pointer to be freed).
-                managedString = defaultValue;
+                //Debug.Log("GOT VAL");
+                s = Marshal.PtrToStringUTF8(value.data.v_raw.data, (int)value.data.v_raw.len);
             }
         }
-        catch (Exception ex)
+        catch
         {
-            Console.WriteLine($"Error retrieving string from NTcore: {ex.Message}");
-            managedString = defaultValue;
-        }
-        finally
-        {
-            if (ntString.str != null)
-            {
-                // 4. CRITICAL: Free the native memory if the function returned a pointer.
-                // We must only free memory allocated by NT_GetString (i.e., if it returned a pointer 
-                // that is not null and is not pointing to the internal default value buffer).
-                // A correct NTcore implementation will require a free if the pointer is non-zero.
-                if (ntString.str != IntPtr.Zero)
-                {
-                    NtCoreInterop.NT_DisposeString(ntString.str);
-                }
-            }
+            
         }
         
-        return managedString;
+        return s;
+    }
+
+    // VERY MUCH UNTESTED
+    public void SetString(IntPtr entry, string newString)
+    {
+        NT_Value value = new NT_Value();
+        value.type = 4; // maybe wrong
+        
+        value.data.v_string  = makeWPIString(newString);
+
+        try
+        {
+            NtCoreInterop.NT_SetEntryValue(entry, value);
+        }
+        catch
+        {
+            
+        }
     }
 
     public void Disconnect(UIntPtr id)
