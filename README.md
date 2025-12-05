@@ -1,4 +1,4 @@
-![screenshot](Assets/sprites/dt_title_full-512.png)
+![screenshot](https://github.com/full-auto-robots/drivetools/blob/master/project%20files/Assets/sprites/dt_title_full-512.png)
 ### Welcome! This is Drivetools, an FRC dashboard among other things. It was developed by 10tothe6 for team 2386.
 
 Learn more: https://full-auto-robots.github.io/#dt_about/
@@ -20,4 +20,4 @@ Installing it is pretty easy:
 See the FAR robotics website for info: https://full-auto-robots.github.io/#dt_docs/
 
 # Screenshots:
-![screenshot](Assets/screenshots/ss_1.png)
+![screenshot](https://github.com/full-auto-robots/drivetools/blob/master/project%20files/Assets/screenshots/ss_1.png)
