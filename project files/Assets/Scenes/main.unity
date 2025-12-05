@@ -6048,7 +6048,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6daa4461292c132449e3a74383ebf51f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FORCE_NEW_SAVE_FILE: 1
+  FORCE_NEW_SAVE_FILE: 0
 --- !u!4 &468828708
 Transform:
   m_ObjectHideFlags: 0
@@ -6076,6 +6076,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d3cf2ef92ce104f95e167ec51f827f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  temp: 0
   mode: 1
   ntPullInterval: 0.1
   ntRecordInterval: 1

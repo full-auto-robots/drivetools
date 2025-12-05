@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 // highest-level tasks
@@ -32,6 +34,9 @@ public class ProgramManager : MonoBehaviour
         //rw_utils.prefs = null;
 
         Application.targetFrameRate = 60;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     // should be pretty much the ONLY occurence of this function other than for initialization purposes
