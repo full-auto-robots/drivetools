@@ -1,7 +1,7 @@
 ![screenshot](https://github.com/full-auto-robots/drivetools/blob/master/project%20files/Assets/sprites/dt_title_full-512.png)
 ### Welcome! This is Drivetools, an FRC dashboard among other things. It was developed by 10tothe6 for team 2386.
 
-Learn more: https://full-auto-robots.github.io/#dt_about/
+Learn more: [frc docs](https://full-auto-robots.github.io/#dt_home/)
 
 # IMPORTANT:
 * You CAN use DriveTools if you aren't programming your robot in java, but you'll have to re-write the helper functions yourself. *(if you do let me know, I'll help make them officially supported)*
