@@ -17,8 +17,6 @@ public class ToolbarMenu : MonoBehaviour
     private float actualMinorWidth;
     public float halfMinorWidth;
 
-    public float storedOffset;
-
     private float defaultIconSize;
 
     void Start()
@@ -50,7 +48,7 @@ public class ToolbarMenu : MonoBehaviour
 
     public void Undock()
     {
-        DockingManager.Instance.Undock(parent.state, actualMinorWidth);
+        DockingManager.Instance.Undock(parent.state, minorWidth);
         parent.state =(ushort) DockingMode.Floating;
     }
 
@@ -84,10 +82,10 @@ public class ToolbarMenu : MonoBehaviour
             }
         }
 
-        TryDock();
 
         if (parent.state == (ushort)DockingMode.Floating)
         {
+            TryDock();
             rt_bg.localPosition = -Vector3.right * halfMinorWidth;
             rt_bg.sizeDelta = new Vector2((defaultIconSize * Sys.uiScaleMultiplier + 15) * t_itemContainer.childCount, actualMinorWidth);
             PopulateToolbar(Vector2.right);
@@ -96,26 +94,26 @@ public class ToolbarMenu : MonoBehaviour
         {
             rt_bg.sizeDelta = new Vector2(Screen.width, actualMinorWidth);
             rt_bg.localPosition = -Vector3.right * halfMinorWidth;
-            transform.position = new Vector3(halfMinorWidth, storedOffset - halfMinorWidth);
+            transform.position = new Vector3(halfMinorWidth, DockingManager.EffectiveUpper() + minorWidth - halfMinorWidth);
             PopulateToolbar(Vector2.right);
         }
         else if (parent.state == (ushort)DockingMode.DockedLower)
         {
             rt_bg.sizeDelta = new Vector2(Screen.width, actualMinorWidth);
             rt_bg.localPosition = -Vector3.right * halfMinorWidth;
-            transform.position = new Vector3(halfMinorWidth, storedOffset + halfMinorWidth);
+            transform.position = new Vector3(halfMinorWidth, DockingManager.EffectiveLower() - minorWidth + halfMinorWidth);
             PopulateToolbar(Vector2.right);
         }
         else if (parent.state == (ushort)DockingMode.DockedLeft)
         {
-            transform.position = new Vector3(storedOffset + halfMinorWidth, halfMinorWidth);
+            transform.position = new Vector3(DockingManager.EffectiveLeft() - minorWidth + halfMinorWidth, halfMinorWidth);
             rt_bg.sizeDelta = new Vector2(actualMinorWidth, Screen.height);
             rt_bg.localPosition = Vector3.up * (Screen.height / 2f - halfMinorWidth) - Vector3.right * halfMinorWidth;
             PopulateToolbar(Vector2.up);
         }
         else if (parent.state == (ushort)DockingMode.DockedRight)
         {
-            transform.position = new Vector3(storedOffset - halfMinorWidth, halfMinorWidth);
+            transform.position = new Vector3(DockingManager.EffectiveRight() + minorWidth - halfMinorWidth, halfMinorWidth);
             rt_bg.localPosition = Vector3.up * (Screen.height / 2f - halfMinorWidth) - Vector3.right * halfMinorWidth;
             rt_bg.sizeDelta = new Vector2(actualMinorWidth, Screen.height);
             PopulateToolbar(Vector2.up);
@@ -126,31 +124,46 @@ public class ToolbarMenu : MonoBehaviour
     {
         if (transform.position.y > Screen.height - 20)
         {
-            parent.state = (ushort)DockingMode.DockedUpper;
+            
 
-            storedOffset = DockingManager.EffectiveUpper();
-            DockingManager.Instance.Dock(parent.state, actualMinorWidth);
+            Undock();
+
+
+            parent.state = (ushort)DockingMode.DockedUpper;
+           
+            DockingManager.Instance.Dock(parent.state, minorWidth);
         }
         else if (transform.position.y < 20)
         {
+
+            Undock();
+
             parent.state = (ushort)DockingMode.DockedLower;
 
-            storedOffset = DockingManager.EffectiveLower();
-            DockingManager.Instance.Dock(parent.state, actualMinorWidth);
+            
+            DockingManager.Instance.Dock(parent.state, minorWidth);
         }
         else if (transform.position.x > Screen.width - 20)
         {
-            parent.state = (ushort)DockingMode.DockedRight;
+            
 
-            storedOffset = DockingManager.EffectiveRight();
-            DockingManager.Instance.Dock(parent.state, actualMinorWidth);
+            
+            Undock();
+
+            parent.state = (ushort)DockingMode.DockedRight;
+            
+            DockingManager.Instance.Dock(parent.state, minorWidth);
         }
         else if (transform.position.x < 20)
         {
-            parent.state = (ushort)DockingMode.DockedLeft;
+            
 
-            storedOffset = DockingManager.EffectiveLeft();
-            DockingManager.Instance.Dock(parent.state, actualMinorWidth);
+            
+            Undock();
+
+            parent.state = (ushort)DockingMode.DockedLeft;
+            
+            DockingManager.Instance.Dock(parent.state, minorWidth);
         }
     }
 

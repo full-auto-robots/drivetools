@@ -54,6 +54,14 @@ public class DockingManager : MonoBehaviour
     public float occupiedLeftArea;
     public float occupiedRightArea;
 
+    void Start()
+    {
+        occupiedLeftArea = 0;
+        occupiedLowerArea = 0;
+        occupiedRightArea = 0;
+        occupiedUpperArea = 0;
+    }
+
     void Update()
     {
         // really only used for debug purposes

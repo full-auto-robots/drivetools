@@ -70,7 +70,7 @@ public class NetworkTables
     public static UIntPtr defaultNT3Port = (UIntPtr)1735;
     public NetworkTables()
     {
-        NtCoreInterop.NT_CreateInstance();
+        NtCoreInterop.NT_GetDefaultInstance();
     }
 
     public void ConnectToServerV3(UIntPtr teamNumber, UIntPtr id)
@@ -116,29 +116,21 @@ public class NetworkTables
 
         return NtCoreInterop.NT_GetEntry(id, ref s);
     }
-
-    public string GetName(IntPtr entry)
-    {
-        WPI_String s = new WPI_String();
-
-        NtCoreInterop.NT_GetEntryName(entry, ref s);
-        
-        return Marshal.PtrToStringAnsi(s.str, (int)s.len);
-    }
     
     public string GetString(IntPtr entry)
     {
-        NT_Value value = new NT_Value();
+        NT_Value value;
         NtCoreInterop.NT_GetEntryValue(entry, out value);
+
         //Debug.Log(value.type);
         string s =  "";
 
         try
         {
-            if (value.data.v_raw.data != IntPtr.Zero && value.data.v_raw.len.ToUInt64() != 0)
+            if (value.data.v_string.str != IntPtr.Zero && value.data.v_string.len.ToUInt64() != 0)
             {
                 //Debug.Log("GOT VAL");
-                s = Marshal.PtrToStringUTF8(value.data.v_raw.data, (int)value.data.v_raw.len);
+                s = Marshal.PtrToStringUTF8(value.data.v_string.str, (int)value.data.v_string.len);
             }
         }
         catch

@@ -128,7 +128,7 @@ public class NetworkManager : MonoBehaviour
             net_fakent.WriteString(key, newValue);
         } else if (mode == NetworkMode.NT3)
         {
-            n.SetString(n.GetEntry(inst, key), newValue);
+           // n.SetString(n.GetEntry(inst, key), newValue);
         } else if (mode == NetworkMode.NT4)
         {
             // TODO:
@@ -310,7 +310,7 @@ public class NetworkManager : MonoBehaviour
                     for (int i = 0; i < keyArray.Length; i++)
                     {
                         keyArray[i] = keys[i];
-                        valueArray[i] = n.GetString(n.GetEntry(inst, keys[i]));
+                        valueArray[i] = n.GetString(n.GetEntry(inst, "/SmartDashboard/" + keys[i]));
                     }
 
                     if (keyArray.Length > 0) {

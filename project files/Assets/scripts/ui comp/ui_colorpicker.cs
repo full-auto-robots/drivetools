@@ -48,7 +48,11 @@ public class ui_colorpicker : MonoBehaviour
         m_colorRange.SetColor("saturatedColor", Color.HSVToRGB(h, 1, 1));
         handleTransform.GetChild(0).GetComponent<Image>().color = GetColor();
         if (hueSlider != null) {
-            // TODO: also have the hue slider invoke onEndInteraction
+            if (hueSlider.value != h)
+            {
+                onEndInteraction.Invoke(GetColor());
+            }
+
             SetHue(hueSlider.value);
         }
         // If the cursor is interacting with the object the handle should follow it

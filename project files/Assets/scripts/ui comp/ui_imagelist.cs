@@ -51,7 +51,10 @@ public class ui_imagelist : MonoBehaviour
             newImage.transform.localPosition = Vector3.zero;
 
             int j = i;
-            newImage.GetComponent<Button>().onClick.AddListener(() => { editImageAction.Invoke(j); });
+            if (editImageAction != null)
+            {
+                newImage.GetComponent<Button>().onClick.AddListener(() => { editImageAction.Invoke(j); });
+            }
             newImage.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => { deleteImageAction.Invoke(j); });
         }
         Refresh();

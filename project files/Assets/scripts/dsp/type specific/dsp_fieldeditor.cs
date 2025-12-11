@@ -48,6 +48,8 @@ public class dsp_fieldeditor : MonoBehaviour
         isDrawMode = false; // just so we're sure
 
         robotSettingsMenu.SetActive(false); // in case it was left active
+        markerSettingsMenu.SetActive(false); 
+        // no path settings, cuz they're not that complicated
 
         // keep in mind that field markers are stored on a software-wide basis, not per-display
         // so the menu is too

@@ -44,6 +44,7 @@ public class UIManager : MonoBehaviour
     public GameObject g_toolbar;
     public GameObject g_infoPage;
     public GameObject g_setupMenu;
+    public GameObject g_shortcutMenu;
     public QuickSetup setupMenu;
 
     public SplashScreen splashScreen;
@@ -66,6 +67,10 @@ public class UIManager : MonoBehaviour
     public void ToggleInfoPage()
     {
         g_infoPage.SetActive(!g_infoPage.activeSelf);
+    }
+    public void ToggleShortcutPage()
+    {
+        g_shortcutMenu.SetActive(!g_shortcutMenu.activeSelf);
     }
 
     public void GetColorFromPicker(UnityAction<Color> toRunAfter)
@@ -136,22 +141,22 @@ public class UIManager : MonoBehaviour
                 DisplayManager.Instance.CreateNewDisplayObject();
             }
 
-            // saving the current layout
-            if (Input.GetKeyDown("l"))
-            {
-                DisplayManager.Instance.SaveCurrentLayoutToDisk();
-            }
+            // // saving the current layout
+            // if (Input.GetKeyDown("l"))
+            // {
+            //     DisplayManager.Instance.SaveCurrentLayoutToDisk();
+            // }
 
             if (Input.GetKeyDown("z"))
             {
                 DisplayManager.Instance.LoadPreviousLayout();
             }
 
-            if (Input.GetKeyDown("r"))
-            {
-                if (NetworkManager.Instance.isRecording) NetworkManager.Instance.StopRecording();
-                else NetworkManager.Instance.StartRecording();
-            }
+            // if (Input.GetKeyDown("r"))
+            // {
+            //     if (NetworkManager.Instance.isRecording) NetworkManager.Instance.StopRecording();
+            //     else NetworkManager.Instance.StartRecording();
+            // }
 
             // using "t" as the toggle-toolbar-key
             if (Input.GetKeyDown("t"))

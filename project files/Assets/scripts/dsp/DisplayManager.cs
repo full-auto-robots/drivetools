@@ -295,7 +295,7 @@ public class DisplayManager : MonoBehaviour
 
     public void CreateNewDisplayObject() // just a shortcut
     {
-        CreateNewDisplayObject(2);
+        CreateNewDisplayObject(0);
     }
 
     public void DeleteDisplayObject(dsp_mainvisual obj)
