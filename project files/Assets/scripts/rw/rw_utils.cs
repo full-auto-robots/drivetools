@@ -106,6 +106,8 @@ public class rw_utils : MonoBehaviour
 
         formatter.Serialize(stream, _rec);
         stream.Close();
+
+        prefs.previousLoadDirectory = dir + filename + ".lyt";
     }
 
     public static dsp_layout LoadLayout(string dir)

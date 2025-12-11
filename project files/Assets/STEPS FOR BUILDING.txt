@@ -3,4 +3,5 @@ as this software gets more convoluted, the build process gets more complicated
 
 
 * CHECK VERSION NUMBER/DATE IN INFO MENU
+* UNCHECK FORCE_NEW_SAVE in the ProgramManager inspector panel, otherwise the .prf files won't be loaded ever
 * SET NetworkManager's mode to ANYTHING BUT 'SIMULATED', otherwise it will be locked into simulated

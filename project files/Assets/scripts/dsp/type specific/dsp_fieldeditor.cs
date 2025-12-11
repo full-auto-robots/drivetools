@@ -8,6 +8,7 @@ using UnityEngine.UI;
 // worth noting that this class is on the same gameObject as dsp_field
 public class dsp_fieldeditor : MonoBehaviour
 {
+    public TextMeshProUGUI tx_prompt;
     public GameObject g_parentObj; // so the entire menu can be activated/shutdown at once
     private bool isDrawMode;
     private bool isRobotPlaceMode;
@@ -35,8 +36,6 @@ public class dsp_fieldeditor : MonoBehaviour
     public Sprite[] drawModeButtons;
     private bool allowedFieldInteraction;
 
-    public ui_button pathConfirmButton;
-
     public GameObject robotSettingsMenu;
     public GameObject markerSettingsMenu;
     private bool isEditing;
@@ -60,6 +59,7 @@ public class dsp_fieldeditor : MonoBehaviour
     {
         isEditing = true;
         g_parentObj.SetActive(true);
+        tx_prompt.gameObject.SetActive(false);
     }
 
     public void Close()
@@ -72,6 +72,9 @@ public class dsp_fieldeditor : MonoBehaviour
     // TODO:
     public void StartPlacingMarker()
     {
+        tx_prompt.gameObject.SetActive(true);
+        tx_prompt.text = "LMB to place";
+
         Transform t_newMarkerHeader = Instantiate(p_markerHeader, t_markerHeaderContainer).transform;
         t_newMarkerHeader.localPosition = -Vector3.up * t_newMarkerHeader.GetComponent<RectTransform>().sizeDelta.y * (t_markerHeaderContainer.childCount);
         Transform t_newMarker = Instantiate(p_marker, t_markerContainer).transform;
@@ -261,6 +264,9 @@ public class dsp_fieldeditor : MonoBehaviour
     // robot spawns when cursor is placed
     public void StartPlacingRobot()
     {
+        tx_prompt.gameObject.SetActive(true);
+        tx_prompt.text = "LMB to place";
+
         Transform t_newRobotHeader = Instantiate(p_robotHeader, t_robotHeaderContainer).transform;
         Transform t_newRobot = Instantiate(p_robot, t_robotContainer).transform;
         t_newRobotHeader.localPosition = -Vector3.up * t_newRobotHeader.GetComponent<RectTransform>().sizeDelta.y * (t_robotHeaderContainer.childCount);
@@ -286,6 +292,9 @@ public class dsp_fieldeditor : MonoBehaviour
     // I'll have a list, like in unity
     public void StartDrawingPath()
     {
+        tx_prompt.gameObject.SetActive(true);
+        tx_prompt.text = "LMB to place point \n ENTER to stop drawing";
+
         isDrawMode = true;
 
         // we create an object to actually DRAW the path
@@ -417,7 +426,7 @@ public class dsp_fieldeditor : MonoBehaviour
         // we also want to flag it so it's kept track of
 
         NetworkManager.Instance.flaggedKeys.Add(GetComponent<dsp_field>().ntKey);
-        DisplayManager.Instance.SaveCurrentLayoutToDisk();
+        DisplayManager.Instance.ForceSaveCurrentLayoutToDisk();
     }
 
     public void ChangeDrawMode(int index)
@@ -485,6 +494,8 @@ public class dsp_fieldeditor : MonoBehaviour
     // instead of starting a path from scratch, here we are re-drawing one
     public void StartDrawingPath(int index)
     {
+        tx_prompt.gameObject.SetActive(true);
+        tx_prompt.text = "LMB to place point \n ENTER to stop drawing";
         activeIndex = index;
         isDrawMode = true;
 
@@ -493,11 +504,11 @@ public class dsp_fieldeditor : MonoBehaviour
 
     public void StopDrawingPath() {
         isDrawMode = false;
+        tx_prompt.gameObject.SetActive(false);
     }
 
     void Update()
     {
-        GetComponent<dsp_field>().rt_stopDrawingButton.gameObject.SetActive(isDrawMode);
         GetComponent<dsp_field>().rt_packageButton.gameObject.SetActive(isEditing);
 
         if (allowedFieldInteraction)

@@ -24,9 +24,7 @@ public class dsp_field : MonoBehaviour
 
     public float textureRotationAngle;
 
-    public RectTransform rt_editButton;
     public RectTransform rt_packageButton;
-    public RectTransform rt_stopDrawingButton;
 
     public GameObject p_lineRenderer;
     public Transform t_pathContainer;
@@ -115,9 +113,7 @@ public class dsp_field : MonoBehaviour
 
         Vector2 parentSize = parentRect.sizeDelta;
 
-        rt_editButton.position = new Vector3(rt_editButton.sizeDelta.x / 2f, -rt_editButton.sizeDelta.y / 2f, 0) + parentRect.position - new Vector3(parentRect.sizeDelta.x, -parentRect.sizeDelta.y, 0) / 2f;
-        rt_packageButton.position = new Vector3(rt_packageButton.sizeDelta.x * 1.5f, -rt_packageButton.sizeDelta.y / 2f, 0) + parentRect.position - new Vector3(parentRect.sizeDelta.x, -parentRect.sizeDelta.y, 0) / 2f;
-        rt_stopDrawingButton.position = new Vector3(rt_stopDrawingButton.sizeDelta.x * 2.5f, -rt_stopDrawingButton.sizeDelta.y / 2f, 0) + parentRect.position - new Vector3(parentRect.sizeDelta.x, -parentRect.sizeDelta.y, 0) / 2f;
+        rt_packageButton.position = new Vector3(rt_packageButton.sizeDelta.x * 0.5f, -rt_packageButton.sizeDelta.y / 2f, 0) + parentRect.position - new Vector3(parentRect.sizeDelta.x, -parentRect.sizeDelta.y, 0) / 2f;
 
         transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, textureRotationAngle);
 

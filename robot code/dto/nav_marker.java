@@ -14,6 +14,8 @@ public class nav_marker {
 
     public double size;
 
+    public Color color;
+
     // there IS a color variable on the c# side, but I don't rlly care abt that here
     
 
@@ -24,18 +26,28 @@ public class nav_marker {
         this.zAngle = zAngle;
         this.drawIndex = 0;
         this.size = 1;
+        this.color = new Color(1,1,1);
     }
     public nav_marker(Vector3 position, double zAngle, int drawIndex) {
         this.position = position;
         this.zAngle = zAngle;
         this.drawIndex = drawIndex;
         this.size = 1;
+        this.color = new Color(1,1,1);
     }
     public nav_marker(Vector3 position, double zAngle, int drawIndex, double size) {
         this.position = position;
         this.zAngle = zAngle;
         this.drawIndex = drawIndex;
         this.size = size;
+        this.color = new Color(1,1,1);
+    }
+    public nav_marker(Vector3 position, double zAngle, int drawIndex, double size, Color color) {
+        this.position = position;
+        this.zAngle = zAngle;
+        this.drawIndex = drawIndex;
+        this.size = size;
+        this.color = color;
     }
 
     public static String EncodeToString(nav_marker input)
@@ -51,7 +63,7 @@ public class nav_marker {
         result += "{" + input.size + "}";
 
         // no color, just putting (1,1,1) bc I have to put SOMETHING
-        result += "{" + "[" + "{" + 1 + "}" + "{" + 1 + "}" + "{" + 1 + "}" + "]" + "}";
+        result += "{" + "[" + "{" + input.color.red + "}" + "{" + input.color.green + "}" + "{" + input.color.blue + "}" + "]" + "}";
 
         result += "]";
 

@@ -187,7 +187,7 @@ public class ui_filebrowser : MonoBehaviour
 
         // *** now files
         // TODO: hiding certain files
-        string[] filePaths = rw_utils.GetFilesInPath(dir);
+        string[] filePaths = rw_utils.GetFilesInPath(rw_utils.RemoveTrailingSlash(dir));
         for (int i = 0; i < filePaths.Length; i++)
         {
             if (rw_utils.GetFileExtension(filePaths[i]) != requiredExtension && requiredExtension.Length > 0)

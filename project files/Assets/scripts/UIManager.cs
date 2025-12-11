@@ -44,6 +44,7 @@ public class UIManager : MonoBehaviour
     public GameObject g_toolbar;
     public GameObject g_infoPage;
     public GameObject g_setupMenu;
+    public GameObject g_warningMenu;
     public GameObject g_shortcutMenu;
     public QuickSetup setupMenu;
 

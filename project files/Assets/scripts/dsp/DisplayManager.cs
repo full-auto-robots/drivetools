@@ -225,6 +225,14 @@ public class DisplayManager : MonoBehaviour
         activeDisplayObjects.Clear();
     }
 
+    public void ForceSaveCurrentLayoutToDisk()
+    {
+        dsp_layout currentLayout = GetCurrentDisplayLayout();
+
+        rw_utils.SaveLayout(currentLayout, rw_utils.prefs.workingLayoutSaveDirectory, "layout");
+        
+    }
+
     public void SaveCurrentLayoutToDisk()
     {
         dsp_layout currentLayout = GetCurrentDisplayLayout();

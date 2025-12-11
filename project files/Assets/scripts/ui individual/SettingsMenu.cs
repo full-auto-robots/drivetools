@@ -35,9 +35,13 @@ public class SettingsMenu : MonoBehaviour
         UIManager.Instance.TrySplashScreen();
     }
 
-    void ShowSetupMenu()
+    public void ShowSetupMenu()
     {
         UIManager.Instance.g_setupMenu.SetActive(true);
+    }
+    public void ShowWarningMenu()
+    {
+        UIManager.Instance.g_warningMenu.SetActive(true);
     }
 
     public void ConfirmSetupMenu()
@@ -70,7 +74,7 @@ public class SettingsMenu : MonoBehaviour
         if (loaded == null || ProgramManager.Instance.FORCE_NEW_SAVE_FILE)
         {
             rw_utils.prefs = rw_userprefs.FactoryDefaults();
-            ShowSetupMenu();
+            ShowWarningMenu();
             Debug.Log("Failed to load prefs. Using factory defaults...");
         }
         else
