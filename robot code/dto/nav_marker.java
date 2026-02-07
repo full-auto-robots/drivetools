@@ -1,5 +1,6 @@
 package frc.utils.dto;
 
+import edu.wpi.first.wpilibj.util.Color;
 import frc.utils.dto.m.Vector3;
 
 /*
