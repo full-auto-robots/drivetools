@@ -50,6 +50,10 @@ public class nav_robot
     {
         string result = "";
 
+        // anything that's not a primitive will have a class name at the front, 
+        // and the class will be contained in round braces
+        result += "robot(";
+
         result += "[";
 
         result += "{" + input.teamNumber.ToString() + "}";
@@ -64,14 +68,17 @@ public class nav_robot
 
         result += "]";
 
-        return result;
+        result += ")";
+
+        return "$" + result;
     }
 
     public static nav_robot DecodeFromString(string input)
     {
         nav_robot result = new nav_robot();
 
-        input = input.Substring(1, input.Length - 2);
+        int start = Sys.FindFirstOccurance(input, '(')+2;
+        input = input.Substring(start, input.Length - start - 2);
 
         result.teamNumber = ushort.Parse(input.Substring(Sys.FindFirstOccurance(input, '{') + 1, Sys.FindClosingBracket(input, Sys.FindFirstOccurance(input, '{')) - 1 - Sys.FindFirstOccurance(input, '{')));
         input = Sys.SubtractVariable(input);

@@ -13,7 +13,7 @@ public class rw_utils : MonoBehaviour
     // the current version of the software, this is organized by year.update.hotfix
     // so, the first build for 2025 is 2025.0.1
     // (same as most frc-related software)
-    public static string buildVersion = "2025.0.1";
+    public static string buildVersion = "2026.0.1";
 
     public static rw_userprefs prefs;
 

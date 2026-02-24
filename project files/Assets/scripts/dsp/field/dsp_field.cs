@@ -318,14 +318,16 @@ public class dsp_field : MonoBehaviour
 
                 if (className == "field")
                 {
+                    // updating the display with a nav_field class
                     fieldData = nav_field.DecodeFromString(data.dataValues[i]);
 
                     Draw();
 
                     return;
                 }
-                else if (className.Length > 0)
+                else if (className.Length > 0) 
                 {
+                    // updating with a nav_robot class 
                     fieldData = new nav_field();
                     fieldData.robots = new nav_robot[1];
                     fieldData.paths = new nav_path[0];

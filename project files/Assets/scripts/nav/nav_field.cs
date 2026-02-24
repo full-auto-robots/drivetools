@@ -18,10 +18,12 @@ public class nav_field
     public static string EncodeToString(nav_field input)
     {
         // encoding looks like this:
-        // "field(robots{[]}paths{[]}markers{[]})"
-
+        // "$field(robots{[]}paths{[]}markers{[]})"
+        
         string result = "";
 
+        // anything that's not a primitive will have a class name at the front, 
+        // and the class will be contained in round braces
         result += "field(";
 
         // *** robots ***
@@ -52,7 +54,7 @@ public class nav_field
 
         return "$" + result;
     }
-
+    
     public static nav_field DecodeFromString(string input)
     {
         // "field(robots{[][][][]}paths{[][][][]}markers{[][][][]})"

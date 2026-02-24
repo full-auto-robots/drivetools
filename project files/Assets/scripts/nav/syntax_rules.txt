@@ -1,0 +1,22 @@
+the rules for the Drivetools backend networktables syntax:
+************************************************************
+(AS OF 02/24/2026 THESE RULES STILL NEED TO FINISH BEING IMPLEMENTED)
+
+
+
+- all entries use name(   ) syntax (e.g. int(  ) or double(   ) or field(   ) or marker(   ))
+    - there used to be a dollar sign ($) at the start, this is no longer the case
+
+- the data is separated by {} (e.g. int({1})  or double({10.2}) or  vector3({1}{2}{5}))
+    - this is done as an extra line of defense against people using commas in their strings "10, 2, 5" which is common
+    - note that only the entry name is required, you CAN name the variables within but this is optional
+    - vector3({1}{2}{3}) and vector3(x{1}y{2}z{3}) are both correct
+    - commas are ENTIRELY OPTIONAL, meaning vector3(x{1},y{2},z{3}) is also technically correct
+
+- arrays are denoted with [] (e.g. [{1},{2},{3},{4},{5}])
+    - you include {} for the same reason as above
+    - again, naming these is totally optional
+    - commas are ALSO OPTIONAL ([{1}{2}{3}{4}{5}{6}] is still valid array notation)
+
+- as mentioned several times above, commas are a completely optional character
+    - this is because thanks to {} they are not necessary

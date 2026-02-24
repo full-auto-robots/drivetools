@@ -36,6 +36,10 @@ public class nav_marker
     {
         string result = "";
 
+        // anything that's not a primitive will have a class name at the front, 
+        // and the class will be contained in round braces
+        result += "marker(";
+
         result += "[";
 
         result += "{" + input.displayIndex.ToString() + "}";
@@ -48,6 +52,8 @@ public class nav_marker
 
         result += "]";
 
+        result += ")";
+
         return "$" + result;
     }
 
@@ -55,7 +61,8 @@ public class nav_marker
     {
         nav_marker result = new nav_marker();
 
-        input = input.Substring(1, input.Length - 2);
+        int start = Sys.FindFirstOccurance(input, '(')+2;
+        input = input.Substring(start, input.Length - start - 2);
 
         result.displayIndex = ushort.Parse(input.Substring(Sys.FindFirstOccurance(input, '{') + 1, Sys.FindClosingBracket(input, Sys.FindFirstOccurance(input, '{')) - 1 - Sys.FindFirstOccurance(input, '{')));
         input = Sys.SubtractVariable(input);

@@ -1,0 +1,6 @@
+file extensions for Drivetools:
+******************************
+
+Layouts -- .dtol
+Recordings -- .dtor
+User Preferences -- .dtop

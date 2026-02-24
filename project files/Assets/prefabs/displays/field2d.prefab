@@ -831,7 +831,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 772680658295408437}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
@@ -5849,7 +5849,6 @@ MonoBehaviour:
   zoomSpeed: 0
   textureRotationAngle: 0
   rt_packageButton: {fileID: 2014064982973486081}
-  rt_stopDrawingButton: {fileID: 0}
   p_lineRenderer: {fileID: 5969054061051530635, guid: a3a5d43d4f665064ca6efc9b756b93e0, type: 3}
   t_pathContainer: {fileID: 6188512301982864122}
   t_markerContainer: {fileID: 3538303433244591331}
@@ -9109,7 +9108,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8668900919255441366
 RectTransform:
   m_ObjectHideFlags: 0
