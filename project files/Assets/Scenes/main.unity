@@ -6303,7 +6303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   temp: 0
-  mode: 1
+  mode: 0
   ntPullInterval: 0.1
   ntRecordInterval: 1
   defaultColor: {r: 0.18431373, g: 0.18431373, b: 0.18431373, a: 1}

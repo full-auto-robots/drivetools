@@ -51,24 +51,25 @@ public class nav_marker {
         this.color = color;
     }
 
+    // as of 02/24/2026 this function complies with dto syntax standards
     public static String EncodeToString(nav_marker input)
     {
         String result = "";
-
-        result += "[";
+        result += "marker(";
 
         result += "{" + input.drawIndex + "}";
 
-        result += "{[" + "{" + input.position.x + "}" + "{" + input.position.y + "}" + "{" + input.position.z + "}" + "]}";
+        result += "{" + "{" + input.position.x + "}" + "{" + input.position.y + "}" + "{" + input.position.z + "}" + "}";
         result += "{" + input.zAngle + "}";
+
+        // size, meters
         result += "{" + input.size + "}";
+        
+        // color (rgb)
+        result += "{" + "{" + input.color.red + "}" + "{" + input.color.green + "}" + "{" + input.color.blue + "}" + "}";
 
-        // no color, just putting (1,1,1) bc I have to put SOMETHING
-        result += "{" + "[" + "{" + input.color.red + "}" + "{" + input.color.green + "}" + "{" + input.color.blue + "}" + "]" + "}";
-
-        result += "]";
-
-        return "$" + result;
+        result += ")";
+        return result;
     }
 
     // shouldn't really need a decode

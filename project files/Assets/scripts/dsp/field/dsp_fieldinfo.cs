@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 // to reduce verbosity and the number of massive files there are,
@@ -7,4 +8,6 @@ using UnityEngine;
 public class dsp_fieldinfo : MonoBehaviour
 {
     public dsp_fieldimage[] includedFieldImages;
+
+    public List<dsp_fieldimage> addedFieldImages; // added by the user
 }

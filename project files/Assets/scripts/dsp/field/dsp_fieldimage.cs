@@ -3,7 +3,7 @@ using UnityEngine;
 [System.Serializable]
 public class dsp_fieldimage
 {
-    public Texture2D img;
+    public Texture2D img; // I'm pretty sure these are serializable?
 
     public Vector2 minAreaPoint;
     public Vector2 maxAreaPoint;

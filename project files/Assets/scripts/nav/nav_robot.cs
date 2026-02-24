@@ -69,8 +69,7 @@ public class nav_robot
         result += "]";
 
         result += ")";
-
-        return "$" + result;
+        return result;
     }
 
     public static nav_robot DecodeFromString(string input)

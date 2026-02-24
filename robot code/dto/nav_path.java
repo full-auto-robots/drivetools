@@ -87,15 +87,17 @@ public class nav_path
     }
 
     // nav_path --> string (for uploading to NT)
+    // as of 02/24/2026 this function complies with dto syntax standards
     public static String EncodeToString(nav_path input)
     {
         String result = "";
 
-        result += "[";
-
+        result += "path(";
+        
+        // how to display the path (polygon, line, loop, etc. )
         result += "{" + input.drawMode + "}";
 
-        result += "{" + "[" + "{" + input.segmentColor.red + "}" + "{" + input.segmentColor.green + "}" + "{" + input.segmentColor.blue + "}" + "]" + "}";
+        result += "{" + "{" + input.segmentColor.red + "}" + "{" + input.segmentColor.green + "}" + "{" + input.segmentColor.blue + "}" + "}";
 
         result += "{";
         for (int i = 0; i < input.positions.length; i++)
@@ -104,11 +106,12 @@ public class nav_path
         }
         result += "}";
 
-        result += "]";
-
-        return "$" + result;
+        result += ")";
+        return result;
     }
 
+
+    // TODO: update this function to comply with new syntax!!
     public static nav_path DecodeFromString(String input)
     {
         nav_path result = new nav_path();

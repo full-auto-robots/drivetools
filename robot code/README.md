@@ -1,5 +1,5 @@
 # Drivetools java-side code
-### v0.2
+### v0.3, encoded string syntax changes
 
 ## Info
 

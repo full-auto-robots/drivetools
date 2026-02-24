@@ -62,6 +62,14 @@ public class dsp_field : MonoBehaviour
         // so I'm doing that later
     }
 
+
+    // normally this would just take in a texture2d, we'd set the texture on the object, and we'd be done,
+    // except we also need to know what amount of the image is the active area
+    public void SetFieldImage(dsp_fieldimage img)
+    {
+        
+    }
+
     public Vector3 GetOrigin()
     {
         Vector2 v = ConvertToPixels(new Vector2(0, 0));

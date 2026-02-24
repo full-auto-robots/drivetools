@@ -11,41 +11,40 @@ public class nav_field
         return nav_field.EncodeToString(this);
     }
 
+    // as of 02/24/2026 this function complies with dto syntax standards
     public static String EncodeToString(nav_field input)
     {
         // encoding looks like this:
-        // "field(robots{[]}paths{[]}markers{[]})"
+        // "field(robots{[ {}  ]}paths{[ {} ]}markers{[  {}  ]})"
 
         String result = "";
-
         result += "field(";
 
         // *** robots ***
-        result += "robots{";
+        result += "robots{[";
         for (int i = 0; i < input.robots.length; i++)
         {
             result += nav_robot.EncodeToString(input.robots[i]);
         }
-        result += "}";
+        result += "]}";
 
         // *** paths ***
-        result += "paths{";
+        result += "paths{[";
         for (int i = 0; i < input.paths.length; i++)
         {
             result += nav_path.EncodeToString(input.paths[i]);
         }
-        result += "}";
+        result += "]}";
 
         // *** markers ***
-        result += "markers{";
+        result += "markers{[";
         for (int i = 0; i < input.markers.length; i++)
         {
             result += nav_marker.EncodeToString(input.markers[i]);
         }
-        result += "}";
+        result += "]}";
 
         result += ")";
-
-        return "$" + result;
+        return result;
     }
 }

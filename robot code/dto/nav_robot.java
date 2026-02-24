@@ -34,24 +34,33 @@ public class nav_robot
         this.color = Color.kWhite;
     }
 
+    // as of 02/24/2026, complies with dto syntax standard
     public static String EncodeToString(nav_robot input)
     {
         String result = "";
 
-        result += "[";
+        result += "robot(";
 
+        // OTHER than the mandatory entry name, I'm not naming any of the variables
+        // this is to save bandwidth, which I know doesn't really matter at this scale but I'm doing it anyway
+
+        // team number
         result += "{" + input.teamNumber + "}";
 
-        result += "{[" + "{" + input.xPosition + "}" + "{" + input.yPosition + "}" + "{" + input.zPosition + "}" + "]}";
+        // position
+        result += "{" + "{" + input.xPosition + "}" + "{" + input.yPosition + "}" + "{" + input.zPosition + "}" + "}"; // extra set of {} for the vector3 class
+        // rotation
         result += "{" + input.zAngle + "}";
 
+        // width
         result += "{" + input.width + "}";
+        // length
         result += "{" + input.length + "}";
 
-        result += "{" + "[" + "{" + input.color.red + "}" + "{" + input.color.green + "}" + "{" + input.color.blue + "}" + "]" + "}";
-
-        result += "]";
-
-        return "$" + result;
+        // color
+        result += "{" + "{" + input.color.red + "}" + "{" + input.color.green + "}" + "{" + input.color.blue + "}" + "}"; // extra set of {} for the color
+        
+        result += ")";
+        return result;
     }
 }

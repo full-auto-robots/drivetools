@@ -17,6 +17,7 @@ the rules for the Drivetools backend networktables syntax:
     - you include {} for the same reason as above
     - again, naming these is totally optional
     - commas are ALSO OPTIONAL ([{1}{2}{3}{4}{5}{6}] is still valid array notation)
+    - arrays are ALWAYS surrounded by an extra set of {} to keep things neat
 
 - as mentioned several times above, commas are a completely optional character
     - this is because thanks to {} they are not necessary
