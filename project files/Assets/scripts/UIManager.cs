@@ -227,4 +227,25 @@ public class UIManager : MonoBehaviour
 
         fileBrowser.whenSelectionConfirmed = afterSelect;
     }
+
+    // menu array stuff, which for some reason wasn't here before
+
+    // this particular function has no use in the actual software, and is just for debug purposes
+    public void SetAllMenusActive(bool active)
+    {
+        for (int i = 0; i < t_canvas.childCount; i++)
+        {
+            // we're not using an array on this class to keep track of the menus,
+            // because that's historically been a pain to update
+            // instead we're using a prefix '[m]' in front of the game object name
+
+            string n = t_canvas.GetChild(i).gameObject.name;
+            if (n.Length < 3) {continue;}
+
+            if (n.Substring(0,3) == "[m]")
+            {
+                t_canvas.GetChild(i).GetChild(0).gameObject.SetActive(active);
+            }
+        }
+    }
 }
